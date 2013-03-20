@@ -1,6 +1,6 @@
 #include"func.h"
 
-bool OddEvenCheck(const bool *byte8, bool isOddCheck, int size = 1)
+bool OddEvenCheck(const bool *byte8, bool isOddCheck, int size)
 {
     if(byte8 == 0)
     {
@@ -28,7 +28,7 @@ bool OddEvenCheck(const bool *byte8, bool isOddCheck, int size = 1)
     return true;
 }
 
-bool RollShiftLeft(bool *begin, int size, int offset = 1)
+bool RollShiftLeft(bool *begin, int size, int offset)
 {
     if(begin == 0)
     {
