@@ -7,22 +7,23 @@ public:
     m_byte();
     ~m_byte();
 
-    //if a bit in byte is 0 return false, else return true(count from the low side).
-    bool GetBit(int bit) const;
+    // If a bit in byte is 0 return false, else return true(count from the low side), if bit < 0 or bit > 7 return false.
+    bool GetBit(unsigned char *where,int bit);
 
-    //set bit in byte with ststus, return previous status.
-    bool SetBit(int bit, bool status);
+    // Set bit in byte with ststus, return true if 0 <= bit <=7, else return false
+    bool SetBit(unsigned char *where, int bit, bool status);
 
-    //shift left and shift right with 0 move in, return the last bit shift out.
-    bool ShiftLeft(int bit = 1);
-    bool ShiftRight(int bit = 1);
+    // Shift left with 0 move in, return true
+	// Offset < 0 to shift right
+    bool ShiftLeft(unsigned char *where, int offset = 1);
 
-    //roll shift left and roll shift right, return the last bit shift.
-    bool RollShiftLeft(int bit = 1);
-    bool RollShiftRight(int bit = 1);
+    // Roll shift left and roll shift right, return true
+	// Offset < 0 to roll shift right
+    bool RollShiftLeft(unsigned char *where, int offset = 1);
 
-public:
-    unsigned char byte;
+private:
+	unsigned char tablePow[8];
+	
 };
 
 #endif

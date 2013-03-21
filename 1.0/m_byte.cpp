@@ -1,119 +1,114 @@
 #include"m_byte.h"
 
-m_byte::m_byte() : byte(0)
+m_byte::m_byte()
 {
+	tablePow[0] = 1;
+	tablePow[1] = 2;
+	tablePow[2] = 4;
+	tablePow[3] = 8;
+	tablePow[4] = 16;
+	tablePow[5] = 32;
+	tablePow[6] = 64;
+	tablePow[7] = 128;
 }
 
 m_byte::~m_byte()
 {
 }
 
-bool m_byte::GetBit(int bit) const
+// _IN	        where
+// _IN	        bit
+//_OUT			return
+bool m_byte::GetBit(unsigned char *where, int bit)
 {
-    int i = 0;
-    unsigned char uctmp = byte;
-    for(i = 0; i < bit; i ++)
-    {
-        uctmp /= 2;
-    }
-    if( uctmp % 2 == 0)
-    {
-        return false;
-    }
-    else
-    {
-        return true;
-    }
+	bit = (bit % 8) % 8;
+
+	unsigned char uctmp = tablePow[bit];
+
+	uctmp &= (*where);
+
+	if(uctmp == 0)
+	{
+		return false;
+	}
+	return true;
 }
 
-bool m_byte::SetBit(int bit, bool status)
+// _IN        where
+// _IN        bit
+// _IN        status
+// _OUT     where
+bool m_byte::SetBit(unsigned char *where, int bit, bool status)
 {
-    int i = 0;
-    unsigned char uctmp = byte;
-    unsigned char base = 1;
-    for(i = 0; i < bit; i ++)
-    {
-        base *=2;
-        uctmp /= 2;
-    }
+	bit = (bit % 8) % 8;
 
-    bool ret = bool(uctmp % 2);
-    
-    if(status == true)
-    {
-        byte |= base;
-    }
-    else
-    {
-        byte &= ~base;
-    }
-    return ret;
+	unsigned char uctmp = tablePow[bit];
+
+	if(status == true)
+	{
+		*where |= uctmp;
+	}
+	else
+	{
+		*where &= (~uctmp);
+	}
+	return true;
 }
 
-bool m_byte::ShiftLeft(int bit)
+// _IN        where
+// _IN        offset
+// _OUT     where
+bool m_byte::ShiftLeft(unsigned char *where, int offset)
 {
-    if(bit == 0)
-    {
-        return false;
-    }
+	unsigned char uctmp = 0;
 
-    bool ret = GetBit(8 - bit);
-    int i = 0;
-    for(i = 0; i < bit; i ++)
-    {
-        bit *=2;
-    }
-    return ret;
+	if(offset > 7 || offset < -7)
+	{
+		uctmp = 128;
+	}
+	if(offset > 0)
+	{
+		uctmp = tablePow[offset];
+	}
+	if(offset <=0)
+	{
+		uctmp = tablePow[- offset];
+	}
+
+	if(offset > 0)
+	{
+		*where *= uctmp;
+	}
+	else
+	{
+		*where /= uctmp;
+	}
+
+    return true;
 }
 
-bool m_byte::ShiftRight(int bit)
+
+// _IN where
+// _IN offset
+// _OUT where
+bool m_byte::RollShiftLeft(unsigned char *where, int offset)
 {
-    if(bit == 0)
-    {
-        return false;
-    }
 
-    bool ret = GetBit(bit - 1);
-    int i = 0;
-    for(i = 0; i < bit; i ++)
-    {
-        bit /=2;
-    }
-    return ret;
-}
+	offset = offset % 8;
 
-bool m_byte::RollShiftLeft(int bit)
-{
-    if(bit == 0)
-    {
-        return false;
-    }
+	unsigned char uctmp = *where;
 
-    bool ret = GetBit(8 - bit);
-    int i = 0;
-    for(i = 0; i < bit; i ++)
-    {
-        bool btmp = GetBit(7);
-        byte *= 2;
-        SetBit(0,btmp);
-    }
-    return ret;
-}
+	if(offset < 0)
+	{
+		ShiftLeft(where, offset);
+		ShiftLeft(&uctmp, 8 + offset);
+	}
+	else
+	{
+		ShiftLeft(where, offset);
+		ShiftLeft(&uctmp, offset - 8);
+	}
+	*where +=uctmp;
 
-bool m_byte::RollShiftRight(int bit)
-{
-    if(bit == 0)
-    {
-        return false;
-    }
-
-    bool ret = GetBit(bit - 1);
-    int i = 0;
-    for(i = 0; i < bit; i ++)
-    {
-        bool btmp = GetBit(0);
-        byte *= 2;
-        SetBit(7,btmp);
-    }
-    return ret;
+    return true;
 }
