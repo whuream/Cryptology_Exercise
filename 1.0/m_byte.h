@@ -21,6 +21,9 @@ public:
 	// Offset < 0 to roll shift right
     bool RollShiftLeft(unsigned char *where, int offset = 1);
 
+	// Odd-Even Check
+	bool OddEvenCheck(unsigned char *where, bool isOddCheck, int size = 1);
+
 private:
 	unsigned char tablePow[8];
 	

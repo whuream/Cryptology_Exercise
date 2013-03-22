@@ -3,34 +3,64 @@
 
 #include"m_byte.h"
 
-class GetKey
+class GetKey : public m_byte
 {
 public:
-    GetKey();
+    GetKey(unsigned char *key);
     ~GetKey();
 
-    //check where the 64bit key is right
-    bool CheckBeginKey(bool isOddCheck);
-
-    // get 48 bit key k
-    GetKey& ProductK();
+    // Get 48 bit key k * 16
+	// Return pointer to key K
+    unsigned char * Process();
 
 private:
-    GetKey& Selection1();   //produce 56bit key from 64bit key
-    GetKey& RollShiftLeftOneBit(m_byte *whichTable); //roll shift left one bit
-    GetKey& RollShiftLeftCD();          //roll shift C and D
+	// Produce 56bit key from 64bit key
+	// _IN		key64
+	// _IN		table1
+	// _OUT	c0d0
+    GetKey& Selection1();
+
+	// Inicialize keys and tables
+	// _IN	_OUT		table1
+	// _IN   _OUT		keyc0d0
+	
+	// _IN	_OUT		tableR
+
+	//_IN		_OUT		keyK
+	//_IN		_OUT		tableK
+	GetKey& Inicialize();
+
+	// Roll shift C and D
+	// _IN				tableR
+	// _IN	_OUT	c0d0
+	// _IN				round
+    GetKey& RollShiftLeftCD(); 
+
+	// GetKeyK
+	// _IN		keyC0D0
+	// _IN		tableK
+	// _IN		round
+	// _OUT	keyK
+	GetKey& ProductK();
 
 private:
-    m_byte *beginKey;       //64bit key
-    m_byte *keyC;          //28bit key C
-    m_byte *keyD;           //28bit key D
-    m_byte *keyK;           //56bit key K
+	// 64bit original key
+	unsigned char *key64;    
+	// 28bit c0 and d0
+    unsigned char *keyC0D0;
+	// Table to get C0d0
+	unsigned char *table1;  
+	
+	// Table to roll shift
+	unsigned char *tableR;
+	// The round of the key
+	int round;                      
 
-    unsigned char *tableC;  //table to get C0
-    unsigned char *tableD;  //table to get D0
-    unsigned char *tableForShift;   //table for RollShiftLeft
-    unsigned char *tableK;             //table for get key K
-    int round;                      //the round of the key
+	// 56bit key K
+    unsigned char *keyK;           
+	// Table for get key K
+    unsigned char *tableK;             
+    
 };
 
 #endif

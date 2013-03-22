@@ -112,3 +112,25 @@ bool m_byte::RollShiftLeft(unsigned char *where, int offset)
 
     return true;
 }
+
+bool m_byte::OddEvenCheck(unsigned char *where, bool isOddCheck, int size)
+{
+	int i = 0;
+	for(i = 0; i < size; i ++)
+	{
+		int j = 0;
+		int count = 0;
+		for(j = 0; j < 8; j ++)
+		{
+			if(GetBit(where + i, j) == true)
+			{
+				count ++;
+			}
+		}
+		if(count % 2 ==0)
+		{
+			return false;
+		}
+	}
+	return true;
+}
