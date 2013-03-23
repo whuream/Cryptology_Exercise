@@ -1,7 +1,36 @@
-int main()
+#include"shell.h"
+
+#include<string>
+
+using namespace std;
+
+//
+int main(int argc, char *argv[])
 {
-    int *p;
-    p = new int[2];
-    delete[] p;
-    return 0;
+	/*
+	if(argc != 4)
+	{
+		return -1;
+	}
+	ifstream in(argv[1], ios::binary);
+	ofstream out(argv[2], ios::binary);
+	ifstream inKey(argv[3],ios::binary);
+	*/
+	ifstream in("in.txt", ios::binary);
+	ofstream out("out.txt", ios::binary);
+	ifstream inKey("key.txt",ios::binary);
+	bool mode = true;
+	if( ! in || ! out || ! inKey)
+	{
+		return -1;
+	}
+	unsigned char key[8];
+
+	inKey.read((char *)key, 8);
+
+	shell m_shell(&in, &out, key, mode);
+	m_shell.Inicialize();
+	m_shell.Process();
+
+	return 0;
 }

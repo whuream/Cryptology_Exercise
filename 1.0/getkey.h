@@ -3,7 +3,7 @@
 
 #include"m_byte.h"
 
-class GetKey : public m_byte
+class GetKey : private m_byte
 {
 public:
     GetKey(unsigned char *key);

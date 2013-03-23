@@ -7,12 +7,15 @@ GetKey::GetKey(unsigned char *key) : round(0), key64(key)
 GetKey::~GetKey()
 {
 	delete[] keyC0D0;
+	keyC0D0 = 0;
 	
 	delete[] tableR;
+	tableR = 0;
 
 	//delete[] keyK;
 
 	delete[] tableK;
+	tableK = 0;
 }
 
 GetKey& GetKey::Inicialize()
@@ -72,7 +75,7 @@ GetKey& GetKey::Selection1()
 	int i = 0;
     for(i = 0; i < 56; i ++)
     {
-		unsigned char ucindex = table1[i];
+		unsigned char ucindex = table1[i] - 1;
 
 		bool btmp = GetBit(key64 + ucindex / 8, ucindex % 8);
 		
@@ -119,7 +122,7 @@ GetKey& GetKey::ProductK()
 	int i = 0;
 	for(i = 0; i < 48; i ++)
     {
-		unsigned char ucindex = tableK[i];
+		unsigned char ucindex = tableK[i] - 1;
 
 		bool btmp = GetBit(keyC0D0 + ucindex / 8, ucindex % 8);
 		
