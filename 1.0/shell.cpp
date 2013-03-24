@@ -32,17 +32,88 @@ shell::~shell()
 
 shell& shell::Process()
 {
-	while(!in->eof())
+	int i = 0;
+	// Encrypt
+	if(mode == true)
 	{
-		in->read((char *)shell_plaintext, 8);
+		long long int inLenth = 0;
+		in->seekg(0, ios::end);
+		inLenth = in->tellg();
+		*out<<inLenth;
+		in->seekg(0, ios::beg);
 
-		m_DES->SetPlaintext(shell_plaintext);
-		shell_ciphertext = m_DES->Process();
-		//m_DES->GetCiphertext();
+		for(i = 0; i < inLenth / 8; i ++)
+		{
+			in->read((char *)shell_plaintext, 8);
 
-		out->write((char *)shell_ciphertext, in->gcount());
+			m_DES->SetPlaintext(shell_plaintext);
+			shell_ciphertext = m_DES->Process();
+			//m_DES->GetCiphertext();
 
+			out->write((char *)shell_ciphertext, 8);
+		}
+
+		// Encrypt end of the file
+		if(inLenth % 8 != 0)
+		{
+			// Fill the short part of the file with zero
+			for(i = 0;i < 8; i ++)
+			{
+				shell_ciphertext = 0;
+			}
+
+			in->read((char *)shell_plaintext, inLenth % 8);
+
+			m_DES->SetPlaintext(shell_plaintext);
+			shell_ciphertext = m_DES->Process();
+			//m_DES->GetCiphertext();
+
+			out->write((char *)shell_ciphertext, 8);
+		}
 	}
 
+	// Decipher
+	else
+	{
+		long long int outLenth = 0;
+		(*in)>>outLenth;
+		
+		// inLenth is the input file's lenth without the output text
+		long long int inLenth = 0;
+		inLenth = in->tellg();
+		in->seekg(0, ios::end);
+		inLenth = in->tellg() - inLenth;
+		in->seekg(0, ios::beg);
+
+		long long int tmp;
+		(*in)>>tmp;
+
+		if(inLenth == outLenth)
+		{
+			for(i = 0; i < inLenth / 8; i ++)
+			{
+				in->read((char *)shell_plaintext, 8);
+				m_DES->SetPlaintext(shell_plaintext);
+				shell_ciphertext = m_DES->Process();
+				out->write((char *)shell_ciphertext, 8);
+			}
+		}
+		else
+		{
+			for(i = 0; i < inLenth / 8 - 1; i ++)
+			{
+				in->read((char *)shell_plaintext, 8);
+				m_DES->SetPlaintext(shell_plaintext);
+				shell_ciphertext = m_DES->Process();
+				out->write((char *)shell_ciphertext, 8);
+			}
+
+			in->read((char *)shell_plaintext, 8);
+			m_DES->SetPlaintext(shell_plaintext);
+			shell_ciphertext = m_DES->Process();
+			out->write((char *)shell_ciphertext, outLenth % 8);
+		}
+		
+	}
 	return *this;
 }
