@@ -29,14 +29,14 @@ DES& DES::SelectionE()
 	for(i = 0; i < 48; i ++)
 	{
 		int index = tableE[i] - 1;
-		SetBit(mid + i / 8, i % 8, GetBit(LR + 32 +index / 8, index % 8));
+		SetBit(mid + i / 8, i % 8, GetBit(LR + 4 +index / 8, index % 8));
 	}
 	return *this;
 }
 
 DES& DES::Function()
 {
-	for(round = 0; round < 1; round ++)
+	for(round = 0; round < 16; round ++)
 	{
 		SelectionE();
 		unsigned char *tmpkey = key + 6 * round;
@@ -55,7 +55,7 @@ DES& DES::Function()
 
 		SectionP();
 
-		unsigned char *tmpL = LR +4;
+		unsigned char *tmpL = LR;
 		for(i = 0; i < 4; i ++)
 		{
 			*(mid + i) ^= *(tmpL + i);
@@ -89,6 +89,7 @@ DES& DES::SectionP()
 
 DES& DES::SelectionS()
 {
+	// Set bool vector equal to mid
 	bool btmp[48];
 	int i = 0;
 	for(i = 0; i < 48; i ++)
@@ -98,7 +99,10 @@ DES& DES::SelectionS()
 
 	for(i = 0; i < 8; i ++)
 	{
+		// Select which table
 		int tableIndex = 64 * i;
+
+		// Select whitch in
 		int btmpIndex = 6 * i;
 
 		int itmp = btmp[btmpIndex + 5] * 2 +btmp[btmpIndex];
@@ -110,12 +114,13 @@ DES& DES::SelectionS()
 
 		tableIndex += itmp;
 
-		unsigned char  out = tableS[tableIndex] - 1;
+		unsigned char  out = tableS[tableIndex];
 
-		int midtmp = 4 * i;
+		
 		int j = 0;
 		for(j = 0; j < 4; j ++)
 		{
+			int midtmp = 4 * i;
 			midtmp += j;
 			SetBit(mid + midtmp / 8, midtmp % 8, GetBit(&out, j));
 		}
