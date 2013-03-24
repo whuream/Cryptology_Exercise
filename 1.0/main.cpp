@@ -16,10 +16,10 @@ int main(int argc, char *argv[])
 	ofstream out(argv[2], ios::binary);
 	ifstream inKey(argv[3],ios::binary);
 	*/
-	ifstream in("in.txt", ios::binary);
-	ofstream out("out.txt", ios::binary);
+	ifstream in("out.txt", ios::binary);
+	ofstream out("reout.txt", ios::binary);
 	ifstream inKey("key.txt",ios::binary);
-	bool mode = true;
+	bool mode = false;
 	if( ! in || ! out || ! inKey)
 	{
 		return -1;
