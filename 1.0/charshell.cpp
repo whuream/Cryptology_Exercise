@@ -224,12 +224,15 @@ bool charshell::Handle()
 		m_filedes.Inicialize();
 		m_filedes.Process();
 
+		*ostr<<"Encryption complete :";
 	}
 	else if(mode == "2")
 	{
 		filedes m_filedes(in, out, key, false);
 		m_filedes.Inicialize();
 		m_filedes.Process();
+
+		*ostr<<"Decryption complete :";
 	}
 	else if(mode == "3")
 	{
@@ -237,6 +240,9 @@ bool charshell::Handle()
 		m_filedes.Inicialize();
 		m_filedes.Process();
 		
+		*ostr<<"Encryption complete :";
+		WriteTime();
+
 		out->close();
 		delete out;
 		out = 0;
@@ -246,9 +252,21 @@ bool charshell::Handle()
 		filedes m_filedes2(&iftmp, reout, key, false);
 		m_filedes2.Inicialize();
 		m_filedes2.Process();
-			
+
+		*ostr<<"Decryption complete :";
+		
+		WriteTime();
+
+		if(Check())
+		{
+			*ostr<<"Check succeed : ";
+		}
+		else
+		{
+			*ostr<<"Check failed :";
+		}
 	}
-	*ostr<<"End time: ";
+
 	WriteTime();
 
 	string tmp = ostr->str();
@@ -272,5 +290,40 @@ bool charshell::WriteTime()
 		   <<m_time.tm_min<<"m "
 		   <<m_time.tm_sec<<"s "
 		   <<'\n';
+	return true;
+}
+
+bool charshell::Check()
+{
+	reout->close();
+	delete reout;
+	reout = 0;
+
+	ifstream iftmp(reoutPath.c_str(), ios::binary);
+
+	char buf1[128];
+	char buf2[128];
+
+	int i = 0;
+	for(i = 0; i < 128; i ++)
+	{
+		buf1[i] = 0;
+		buf2[i] = 0;
+	}
+	in->seekg(0, ios::beg);
+	while( ! in->eof() && ! iftmp.eof())
+	{
+		in->read((char *)buf1, 128);
+		iftmp.read((char *)buf2, 128);
+
+		for(i = 0; i < 128; i ++)
+		{
+			if(buf1[i] != buf2[i])
+			{
+				return false;
+			}
+		}
+	}
+
 	return true;
 }

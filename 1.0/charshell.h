@@ -39,6 +39,8 @@ private:
 	bool SetWrite();
 	bool WriteTime();
 
+	bool Check();
+
 
 private:
 
