@@ -5,80 +5,50 @@ class GetKey
 {
 public:
 
-    GetKey(unsigned char * const key, const bool isEncryption);
+    GetKey();
     ~GetKey();
 
-    //get C0 and D0 from byte
-    //_in       InicializeTables()
-    //_in       InicializeKeys()
-    //_in       SectionC0D0()
-    //_out     keyCD
-    GetKey& Initialize(unsigned char *originalKey);
-
-    //get key K
-    //_in       ShiftCD()
-    //_in       SelectionK()
-    //_out     keyK
-    //_out     round
-    GetKey& ProductKeyK();                 
+	// IN			char originalkey[8]
+	// OUT		char keyK[16 * 48]
+    GetKey& Process(char *originalkey, char *keyK);
 
 private: 
 
-    //get C0, D0 from original key
-    //_in       originalKey
-    //_out     keyCD
-    //originalKey will be released
-    GetKey& SectionC0D0(); 
+    GetKey& Selection1();
 
-    //roll shift CD in one round
-    //_in       keyCD
-    //_in       tableShift
-    //_in       round
-    //_in       mode
-    //_out     keyCD
-    GetKey& ShiftCD();                          
+	GetKey& Initialize();
 
-    //get key K
-    //_in       keyCD
-    //_in       tableK
-    //_out     keyK
-    GetKey& SectionK();     
+    GetKey& RollShiftLeftCD();                         
 
-    //Inicialize tables
-    //Innicialize tableShift and table K
-    //_out      tableShift
-    //_out      tableK
-    GetKey& InitializeTables();
+    GetKey& ProductK(char *keyK); 
 
-    //Inicialize Keys
-    //Inicialize keyCD and keyK
-    //_out      keyCD
-    //_out      keyK
-    GetKey& InitializeKeys();
+	// Left is low
+	bool RollShiftLeft(char *begin, int size = 28); 
+
+	// Put bits in byte to a bool vector
+	//Put low bits to low index
+	//This will destroy the source
+	bool ByteToChar(char *destination, char *source, int byte = 8);
+
 
 private:
-    //64 bit key
-    unsigned char *originalKey;
+	// 64
+	char key64[64];
 
-    //C and D;
-    bool *keyCD;             
+	// 7
+    char keyC0D0[56];             
 
-    // key K in one round
-    bool *keyK;                   
+	// 56
+	char table1[56];
 
-    // table for shift in different round
-    unsigned char *tableShift;
+	// 16
+    char tableR[16];
 
-    //table for get key K
-    unsigned char *tableK;      
+    int round;  
+	
+	// 48
+    char tableK[6 * 8];      
 
-    //which round which key
-    //from 0 to 15
-    int round;          
-
-    // true to encryption
-    //false to decryption
-    bool mode;
 };
 
 #endif

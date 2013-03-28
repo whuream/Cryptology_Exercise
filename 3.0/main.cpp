@@ -1,7 +1,16 @@
-int main()
+#include"charshell.h"
+
+#include<string>
+
+using namespace std;
+
+
+int main(int argc, char **argv)
 {
-    bool p[1000];
-    int a = sizeof(p);
-    a+=1;
-    return 0;
+	charshell m_charshell(argc, argv, 0);
+	if(!m_charshell.Handle())
+	{
+		return -1;
+	}
+	return 0;
 }
