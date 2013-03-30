@@ -24,6 +24,7 @@ bool charshell::SetMode()
 {
 	if( argc <= 1 || argv[1] == 0)
 	{
+		m_log.Out("Error : No mode.\n\n");
 		return false;
 	}
 
@@ -31,6 +32,7 @@ bool charshell::SetMode()
 
 	if(mode != "1" && mode != "2" && mode != "3")
 	{
+		m_log.Out("Error : Mode unknow.\n\n");
 		return false;
 	}
 
@@ -54,6 +56,7 @@ bool charshell::SetKey()
 {
 	if(argc <= 2 || argv[2] == 0)
 	{
+		m_log.Out("Error : No key.\n\n");
 		return false;
 	}
 
@@ -62,7 +65,7 @@ bool charshell::SetKey()
 	ifstream tmp(keyPath.c_str(), ios::binary);
 	if(! tmp)
 	{
-		m_log.Out("Open key file : ").Out(keyPath).Out(" failed.\n\n");
+		m_log.Out("Error : Open key file : ").Out(keyPath).Out(" failed.\n\n");
 		return false;
 	}
 	else
@@ -75,7 +78,7 @@ bool charshell::SetKey()
 	keyLenth = (int)tmp.tellg();
 	if(keyLenth != 8)
 	{
-		m_log.Out("Error : keylenth is not 8.\n\n");
+		m_log.Out("Error : Keylenth is not 8.\n\n");
 		return false;
 	}
 
@@ -88,6 +91,7 @@ bool charshell::SetIn()
 {
 	if(argc <= 3 || argv[3] == 0)
 	{
+		m_log.Out("Error : No input file.\n\n");
 		return false;
 	}
 
@@ -97,7 +101,7 @@ bool charshell::SetIn()
 		
 	if( !(in) || ! (*in))
 	{
-		m_log.Out("Open input file : ").Out(inPath).Out(" failed.\n\n");
+		m_log.Out("Error : Open input file : ").Out(inPath).Out(" failed.\n\n");
 		return false;
 	}
 	else
@@ -118,11 +122,28 @@ bool charshell::SetOut()
 		outPath = argv[4];
 	}
 
+	if(outPath == keyPath)
+	{
+		m_log.Out("Error : Output file can't be key file.\n\n");
+		return false;
+	}
+	if(outPath == inPath)
+	{
+		m_log.Out("Error : Output file can't be input file.\n\n");
+
+		return false;
+	}
+	if(outPath == logPath)
+	{
+		m_log.Out("Error : Output file can't be log file.\n\n");
+		return false;
+	}
+
 	out = new ofstream(outPath.c_str(), ios::binary);
 		
 	if( ! out || ! (*out))
 	{
-		m_log.Out("Create output file : ").Out(outPath).Out(" failed.\n\n");
+		m_log.Out("Error : Create output file : ").Out(outPath).Out(" failed.\n\n");
 		return false;
 	}
 	else
@@ -143,12 +164,32 @@ bool charshell::SetReout()
 	{
 		reoutPath = argv[5];
 	}
+	if(reoutPath == keyPath)
+	{
+		m_log.Out("Error : Reoutput file can't be key file.\n\n");
+		return false;
+	}
+	if(reoutPath == inPath)
+	{
+		m_log.Out("Error : Reoutput file can't be input file.\n\n");
+		return false;
+	}
+	if(reoutPath == logPath)
+	{
+		m_log.Out("Error : Reoutput file can't be log file.\n\n");
+		return false;
+	}
+	if(reoutPath == outPath)
+	{
+		m_log.Out("Error : Reoutput file can't be output file.\n\n");
+		return false;
+	}
 
 	reout = new ofstream(reoutPath.c_str(), ios::binary);
 
 	if(! reout || ! (*reout))
 	{
-		m_log.Out("Create reoutput file : ").Out(reoutPath).Out(" failed.\n\n");
+		m_log.Out("Error : Create reoutput file : ").Out(reoutPath).Out(" failed.\n\n");
 		return false;
 	}
 	else
@@ -163,18 +204,36 @@ bool charshell::Setlog()
 {
 	if(argc < 7 || argv[6] == 0)
 	{
-		logPath = inPath + "_LOG";
+		if(argc >= 4 && argv[3] !=0)
+		{
+			logPath = string(argv[3]) + "_LOG";
+		}
+		else
+		{
+			logPath = "_LOG";
+		}
 	}
 	else
 	{
 		logPath = argv[6];
 	}
 
+	if(logPath == keyPath)
+	{
+		m_log.Out("Error : Log file can't be key file.\n\n");
+		return false;
+	}
+	if(logPath == inPath)
+	{
+		m_log.Out("Error : Log file can't be input file.\n\n");
+		return false;
+	}
+
 	log = new ofstream(logPath.c_str());
 
 	if(! log || ! (*log))
 	{
-		cout<<"Create log file : "<<logPath<<" filed.\n\n";
+		cout<<"Error : Create log file : "<<logPath<<" filed.\n\n";
 		return false;
 	}
 
@@ -351,7 +410,7 @@ bool charshell::Check()
 		{
 			if(buf1[i] != buf2[i])
 			{
-				m_log.Out("Check filed.\n");
+				m_log.Out("Error : Check filed.\n");
 				return false;
 			}
 		}
