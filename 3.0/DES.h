@@ -11,10 +11,12 @@ public:
 
 	// IN			originalKey[8]
 	// OUT		keyK[16 * 48]
+	// Cautious: this will destroy originalkey
 	DES& Inicialize(char *originalKey);
 
 	// IN			plaintext[8]
 	//OUT		outCiphertext[8]		
+	//Cautious: this will destroy plaintext8
 	DES& Process(char *plaintext8,char *ciphertext8,bool  mode);
 
 private:

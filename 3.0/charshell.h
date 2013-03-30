@@ -68,6 +68,8 @@ private:
 
 	string writeOut;
 	ostringstream *ostr;
+
+	tm begintime;
 };
 
 #endif

@@ -12,7 +12,10 @@ filedes::~filedes()
 
 filedes& filedes::Process(ifstream *in, ofstream *out, char *key, bool mode)
 {
-	m_DES.Inicialize(key);
+	if(key != 0)
+	{
+		m_DES.Inicialize(key);
+	}
 	
 	int i = 0;
 	// Encrypt

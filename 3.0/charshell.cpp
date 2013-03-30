@@ -248,10 +248,7 @@ bool charshell::Handle()
 
 		ifstream iftmp(outPath.c_str(), ios::binary);
 
-		// Don't know why SetKey() doesn't work
-		//SetKey();
-		filedes m_filedes2;
-		m_filedes2.Process(&iftmp, reout, key2, false);
+		m_filedes.Process(&iftmp, reout, 0, false);
 
 		*ostr<<"Decryption complete :";
 		
