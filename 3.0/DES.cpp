@@ -105,10 +105,10 @@ DES& DES::Inicialize(char *originalKey)
 	{
 		char* whichOne =tableS + i * 4;
 		int j = 0;
-		for(j = 0; j < 4; j ++)
+		for(j = 3; j >= 0; j --)
 		{
 			// Do not - 1
-			whichOne[j] = ctmpS[i] % 2;
+			whichOne[j] = (char)(ctmpS[i] % 2);
 			ctmpS[i] >>= 1;
 		}
 	}
@@ -189,13 +189,13 @@ DES& DES::SelectionS()
 		// Select whitch in
 		char* whichIn = mid + 6 * i;
 
-		int itmp = whichIn[5] * 2 +whichIn[0];
+		int itmp = whichIn[0] * 2 +whichIn[5];
 
 		// Select which row
 		tableIndex += itmp * 4 * 16;
 
 		// Need improve
-		itmp = whichIn[4] * 8 + whichIn[3] * 4 + whichIn[2] * 2 + whichIn[1];
+		itmp = whichIn[1] * 8 + whichIn[2] * 4 + whichIn[3] * 2 + whichIn[4];
 
 		// Select which  column
 		tableIndex += itmp * 4;
@@ -243,10 +243,24 @@ DES& DES::Function(bool mode)
 		}
 
 		char *R = LR + 32;
-		for(i = 0; i < 32; i ++)
+		if(round != 15)
 		{
-			LR[i] = R[i];
-			R[i] = mid[i];
+			for(i = 0; i < 32; i ++)
+			{
+				LR[i] = R[i];
+			}
+
+			for(i = 0; i < 32; i ++)
+			{
+				R[i] = mid[i];
+			}
+		}
+		else
+		{
+			for(i = 0; i < 32; i ++)
+			{
+				LR[i] = mid[i];
+			}
 		}
 	}
 	return *this;
@@ -265,9 +279,9 @@ bool DES::ByteToChar(char *destination, char *source, int byte)
     {
 		char* whichByte =  destination + i * 8;
         int j = 0;
-        for(j = 0; j < 8; j ++)
+        for(j = 7; j >= 0; j --)
         {
-			*(whichByte + j) = (char)(source[i] % 2);
+			*(whichByte + j) = (char)((unsigned char)source[i] % 2);
 			source[i] >>= 1;
         }
     }
@@ -283,6 +297,13 @@ bool DES::CharToByte(char *destination, char *source, int byte)
     }
 
 	int i = 0;
+
+	// Initialize destination
+	for(i = 1; i < byte; i ++)
+	{
+		destination[i] = 0;
+	}
+
 	for(i = 0; i < byte; i ++)
     {
 		char* whichByte =  source + i * 8;
@@ -290,7 +311,10 @@ bool DES::CharToByte(char *destination, char *source, int byte)
         for(j = 0; j < 8; j ++)
         {
 			destination[i] += whichByte[j];
-			destination[i] <<= 1;
+			if(j != 7)
+			{
+				destination[i] <<= 1;
+			}
         }
     }
 	return true;

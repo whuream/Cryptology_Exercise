@@ -31,7 +31,8 @@ GetKey& GetKey::Initialize()
     
     for(i = 0; i < 16; i ++)
     {
-        tableR[i] = ctmpR[i] - 1;
+		// Do not - 1 !!!!!
+        tableR[i] = ctmpR[i];
     }
 
 	// Inicialize tableK
@@ -118,7 +119,7 @@ bool GetKey::RollShiftLeft(char *begin, int size)
     int i = 0;
     for(i = 0; i < size - 1; i ++)
     {
-		begin[i + 1] = begin[i];
+		begin[i] = begin[i + 1];
     }
 	begin[size - 1] = ctmp;
 
@@ -138,9 +139,9 @@ bool GetKey::ByteToChar(char *destination, char *source, int byte)
     {
 		char* whichByte =  destination + i * 8;
         int j = 0;
-        for(j = 0; j < 8; j ++)
+        for(j = 7; j >= 0; j --)
         {
-			*(whichByte + j) = (char)(source[i] % 2);
+			*(whichByte + j) = (char)((unsigned char)source[i] % 2);
 			source[i] >>= 1;
         }
     }
