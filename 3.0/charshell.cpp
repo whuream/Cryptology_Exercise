@@ -1,6 +1,6 @@
 #include"charshell.h"
 
-charshell::charshell(int _argc, char *_argv[], long long int _beginTime) : argc(_argc), argv(_argv), beginTime(_beginTime), in(0), out(0), log(0), reout(0), ostr(0)
+charshell::charshell(int _argc, char *_argv[]) : argc(_argc), argv(_argv), in(0), out(0), log(0), reout(0)
 {
 }
 
@@ -18,44 +18,41 @@ charshell::~charshell()
 	delete reout;
 	reout = 0;
 
-	delete ostr;
-	ostr = 0;
 }
 
 bool charshell::SetMode()
 {
-	if( argc < 2 || argv[1] == 0)
+	if( argc <= 1 || argv[1] == 0)
 	{
 		return false;
 	}
+
 	mode = argv[1];
-	if(mode.length() != 1)
+
+	if(mode != "1" && mode != "2" && mode != "3")
 	{
 		return false;
 	}
-	if(mode[0] != '1' && mode[0] != '2' && mode[0] !='3')
-	{
-		return false;
-	}
-	*ostr<< "Mode :";
+
+	m_log.Out("Mode : ");
 	if(mode == "1")
 	{
-		*ostr<< "encrypt\n";
+		m_log.Out("Encryption.\n\n");
 	}
 	else if(mode == "2")
 	{
-		*ostr<< "decipher\n";
+		m_log.Out("Deciption.\n\n");
 	}
-	else if(mode == "3")
+	else
 	{
-		*ostr<<"check\n";
+		m_log.Out("Check.\n\n");
 	}
 	return true;
 }
 
 bool charshell::SetKey()
 {
-	if(argc < 3 || argv[2] == 0)
+	if(argc <= 2 || argv[2] == 0)
 	{
 		return false;
 	}
@@ -65,7 +62,12 @@ bool charshell::SetKey()
 	ifstream tmp(keyPath.c_str(), ios::binary);
 	if(! tmp)
 	{
+		m_log.Out("Open key file : ").Out(keyPath).Out(" failed.\n\n");
 		return false;
+	}
+	else
+	{
+		m_log.Out("Open key file : ").Out(keyPath).Out(" succeed.\n\n");
 	}
 
 	int keyLenth = 0;
@@ -73,18 +75,18 @@ bool charshell::SetKey()
 	keyLenth = (int)tmp.tellg();
 	if(keyLenth != 8)
 	{
+		m_log.Out("Error : keylenth is not 8.\n\n");
 		return false;
 	}
 
 	tmp.read((char *)key, 8);
 
-	*ostr<< string("Key File: ")+ keyPath + '\n';
 	return true;
 }
 
 bool charshell::SetIn()
 {
-	if(argc < 4 || argv[3] == 0)
+	if(argc <= 3 || argv[3] == 0)
 	{
 		return false;
 	}
@@ -95,16 +97,19 @@ bool charshell::SetIn()
 		
 	if( !(in) || ! (*in))
 	{
+		m_log.Out("Open input file : ").Out(inPath).Out(" failed.\n\n");
 		return false;
 	}
-
-	*ostr<< string("Input File: ") + inPath + '\n';
+	else
+	{
+		m_log.Out("Open input file : ").Out(inPath).Out(" succeed.\n\n");
+	}
 	return true;
 }
 
 bool charshell::SetOut()
 {
-	if(argc < 5 || argv[4] == 0)
+	if(argc <= 4 || argv[4] == 0)
 	{
 		outPath = inPath + "_DES";
 	}
@@ -117,33 +122,14 @@ bool charshell::SetOut()
 		
 	if( ! out || ! (*out))
 	{
+		m_log.Out("Create output file : ").Out(outPath).Out(" failed.\n\n");
 		return false;
-	}
-
-	*ostr<< string("Output File: ") + outPath + '\n';
-	return true;
-}
-
-bool charshell::Setlog()
-{
-	
-	if(argc < 7 || argv[6] == 0)
-	{
-		logPath = inPath + "_LOG";
 	}
 	else
 	{
-		logPath = argv[6];
+		m_log.Out("Create output file : ").Out(outPath).Out(" succeed.\n\n");
 	}
 
-	log = new ofstream(logPath.c_str());
-
-	if(! log || ! (*log))
-	{
-		return false;
-	}
-
-	*ostr<< string("Log: ") + logPath + '\n';
 	return true;
 }
 
@@ -162,85 +148,132 @@ bool charshell::SetReout()
 
 	if(! reout || ! (*reout))
 	{
+		m_log.Out("Create reoutput file : ").Out(reoutPath).Out(" failed.\n\n");
 		return false;
 	}
+	else
+	{
+		m_log.Out("Create reoutput file : ").Out(reoutPath).Out(" succeed.\n\n");
+	}
 
-	*ostr<< string("Reout file: ") + reoutPath + '\n';
 	return true;
 }
 
-bool charshell::SetWrite()
+bool charshell::Setlog()
 {
-	ostr = new ostringstream();
-	if(!ostr || !(*ostr))
+	if(argc < 7 || argv[6] == 0)
 	{
+		logPath = inPath + "_LOG";
+	}
+	else
+	{
+		logPath = argv[6];
+	}
+
+	log = new ofstream(logPath.c_str());
+
+	if(! log || ! (*log))
+	{
+		cout<<"Create log file : "<<logPath<<" filed.\n\n";
 		return false;
 	}
+
+	m_log.Initialize(log);
+	//m_log.Out("Create log file : ").Out(logPath).Out(" succeed.\n\n");
+
 	return true;
 }
 
 bool charshell::Handle()
 {
-	if(!SetWrite())
-	{
-		return false;
-	}
-
-	*ostr<<"Begin time: ";
-	WriteTime();
-
-	if(!SetMode())
-	{
-		return false;
-	}
-
-	if(!SetKey())
-	{
-		return false;
-	}
-
-	if(!SetIn())
-	{
-		return false;
-	}
-
-	if(!SetOut())
-	{
-		return false;
-	}
 	if(!Setlog())
 	{
 		return false;
 	}
 
-	if(mode == "3" && !SetReout())
+	if(!SetMode() || !SetKey() || !SetIn() || !SetOut())
 	{
 		return false;
 	}
 
 	if(mode == "1")
 	{
-		filedes m_filedes;
+		m_log.Out("Encryption begin : ");
+		m_log.GetTime();
+		
+		m_log.Set();
+
+		long long int lenth = 0;
+		in->seekg(0, ios::end);
+		lenth = in->tellg();
+		in->seekg(0,ios::beg);
+
+		long long int time = 1;
+
 		m_filedes.Process(in, out, key, true);
 
-		*ostr<<"Encryption complete :";
+		m_log.Out("Encryption end : ");
+		m_log.GetTime();
+
+		m_log.Out("Used time : ");
+		time += m_log.Get();
+
+		m_log.Out("Average speed : ").Out(lenth / time).Out(" byte/s\n\n");
 	}
+
 	else if(mode == "2")
 	{
-		filedes m_filedes;
+		m_log.Out("Deciption begin : ");
+		m_log.GetTime();
+		
+		m_log.Set();
+
+		long long int lenth = 0;
+		in->read((char *)&lenth, 8);
+		in->seekg(0,ios::beg);
+
+		long long int time = 1;
+
 		m_filedes.Process(in, out, key, false);
 
-		*ostr<<"Decryption complete :";
+		m_log.Out("Deciption end : ");
+		m_log.GetTime();
+
+		m_log.Out("Used time : ");
+		time += m_log.Get();
+
+		m_log.Out("Average speed : ").Out(lenth / time).Out(" byte/s\n\n");
 	}
+
 	else if(mode == "3")
 	{
-		char key2[8];
-		for(int i = 0; i < 8; i++) key2[i] = key[i];
-		filedes m_filedes;
+		if( ! SetReout())
+		{
+			return false;
+		}
+
+		m_log.Out("Encryption begin : ");
+		m_log.GetTime();
+		
+		m_log.Set();
+
+		long long int lenth = 0;
+		in->seekg(0, ios::end);
+		lenth = in->tellg();
+		in->seekg(0,ios::beg);
+
+		long long int time = 1;
+
+
 		m_filedes.Process(in, out, key, true);
 		
-		*ostr<<"Encryption complete :";
-		WriteTime();
+		m_log.Out("Encryption end : ");
+		m_log.GetTime();
+
+		m_log.Out("Used time : ");
+		time += m_log.Get();
+
+		m_log.Out("Average speed : ").Out(lenth / time).Out(" byte/s\n\n");
 
 		out->close();
 		delete out;
@@ -248,47 +281,48 @@ bool charshell::Handle()
 
 		ifstream iftmp(outPath.c_str(), ios::binary);
 
+		m_log.Out("Deciption begin : ");
+		m_log.GetTime();
+		
+		m_log.Set();
+
+		
+		time = 1;
+
 		m_filedes.Process(&iftmp, reout, 0, false);
 
-		*ostr<<"Decryption complete :";
+		m_log.Out("Deciption end : ");
+		m_log.GetTime();
+
+		m_log.Out("Used time : ");
+		time += m_log.Get();
+
+		m_log.Out("Average speed : ").Out(lenth / time).Out(" byte/s\n\n");
+
+
+		time = 1;
+
+		m_log.Out("Check begin : ");
+		m_log.GetTime();
 		
-		WriteTime();
+		m_log.Set();
 
-		if(Check())
-		{
-			*ostr<<"Check succeed : ";
-		}
-		else
-		{
-			*ostr<<"Check failed :";
-		}
+		Check();
+
+		m_log.Out("Check end : ");
+		m_log.GetTime();
+
+		m_log.Out("Used time : ");
+		time += m_log.Get();
+
+		m_log.Out("Average speed : ").Out(lenth / time).Out(" byte/s\n\n");
+
 	}
-
-	WriteTime();
-
-	string tmp = ostr->str();
-	cout<<tmp;
-	*log<<tmp;
 
 	return false;
 }
 
-bool charshell::WriteTime()
-{
-	tm m_time;
-	time_t seconds;
-	time(&seconds);
-	localtime_s(&m_time, &seconds);
 
-	*ostr<<m_time.tm_year + 1900<<"y "
-		   <<m_time.tm_mon + 1<<"m "
-		   <<m_time.tm_mday<<"d "
-		   <<m_time.tm_hour<<"h "
-		   <<m_time.tm_min<<"m "
-		   <<m_time.tm_sec<<"s "
-		   <<'\n';
-	return true;
-}
 
 bool charshell::Check()
 {
@@ -317,10 +351,11 @@ bool charshell::Check()
 		{
 			if(buf1[i] != buf2[i])
 			{
+				m_log.Out("Check filed.\n");
 				return false;
 			}
 		}
 	}
-
+	m_log.Out("Check succeed.\n");
 	return true;
 }

@@ -2,11 +2,11 @@
 #define _CHARSHELL_H
 
 #include"filedes.h"
+#include"showlog.h"
 
 #include<string>
 #include<fstream>
 #include<iostream>
-#include<ctime>
 #include<sstream>
 
 using namespace std;
@@ -23,21 +23,20 @@ public:
 	// 5th value is outputfile's path      selectable
 	// 6th value is reoutputfile's path   selectable
 	// 7th value is logfile's path			 selectable
-	charshell(int _argc, char **_argv, long long int _beginTime);
+	charshell(int _argc, char **_argv);
 	~charshell();
 
 	bool Handle();
 	
 private:
+	
 	bool SetMode();
 	bool SetKey();
 	bool SetIn();
 	bool SetOut();
-	bool Setlog();
+	
 	bool SetReout();
-
-	bool SetWrite();
-	bool WriteTime();
+	bool Setlog();
 
 	bool Check();
 
@@ -58,18 +57,14 @@ private:
 	string outPath;
 	ofstream *out;
 
-	string logPath;
-	ofstream *log;
-
 	string reoutPath;
 	ofstream *reout;
 
-	long long int beginTime;
+	string logPath;
+	ofstream *log;
 
-	string writeOut;
-	ostringstream *ostr;
-
-	tm begintime;
+	filedes m_filedes;
+	ShowLog m_log;
 };
 
 #endif

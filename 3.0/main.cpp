@@ -7,7 +7,7 @@ using namespace std;
 
 int main(int argc, char **argv)
 {
-	charshell m_charshell(argc, argv, 0);
+	charshell m_charshell(argc, argv);
 	if(!m_charshell.Handle())
 	{
 		return -1;
