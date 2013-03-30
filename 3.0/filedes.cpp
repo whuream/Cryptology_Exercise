@@ -21,7 +21,8 @@ filedes& filedes::Process(ifstream *in, ofstream *out, char *key, bool mode)
 		long long int inLenth = 0;
 		in->seekg(0, ios::end);
 		inLenth = in->tellg();
-		*out<<inLenth;
+		//*out<<inLenth;
+		out->write((char *)&inLenth, 8);
 		in->seekg(0, ios::beg);
 		
 		for(i = 0; i < inLenth / 8 ; i ++)
@@ -54,8 +55,9 @@ filedes& filedes::Process(ifstream *in, ofstream *out, char *key, bool mode)
 	else
 	{
 		long long int outLenth = 0;
-		(*in)>>outLenth;
-		
+		//(*in)>>outLenth;
+		in->read((char *)&outLenth, 8);
+
 		// inLenth is the input file's lenth without the output text
 		long long int inLenth = 0;
 		inLenth = in->tellg();
@@ -64,7 +66,8 @@ filedes& filedes::Process(ifstream *in, ofstream *out, char *key, bool mode)
 		in->seekg(0, ios::beg);
 
 		long long int tmp;
-		(*in)>>tmp;
+		//(*in)>>tmp;
+		in->read((char *)&tmp, 8);
 
 		if(inLenth == outLenth)
 		{

@@ -234,6 +234,8 @@ bool charshell::Handle()
 	}
 	else if(mode == "3")
 	{
+		char key2[8];
+		for(int i = 0; i < 8; i++) key2[i] = key[i];
 		filedes m_filedes;
 		m_filedes.Process(in, out, key, true);
 		
@@ -246,8 +248,10 @@ bool charshell::Handle()
 
 		ifstream iftmp(outPath.c_str(), ios::binary);
 
+		// Don't know why SetKey() doesn't work
+		//SetKey();
 		filedes m_filedes2;
-		m_filedes2.Process(&iftmp, reout, key, false);
+		m_filedes2.Process(&iftmp, reout, key2, false);
 
 		*ostr<<"Decryption complete :";
 		

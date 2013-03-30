@@ -299,7 +299,7 @@ bool DES::CharToByte(char *destination, char *source, int byte)
 	int i = 0;
 
 	// Initialize destination
-	for(i = 1; i < byte; i ++)
+	for(i = 0; i < byte; i ++)
 	{
 		destination[i] = 0;
 	}
