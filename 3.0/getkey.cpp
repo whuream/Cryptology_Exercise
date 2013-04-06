@@ -125,26 +125,3 @@ bool GetKey::RollShiftLeft(char *begin, int size)
 
     return true;
 }
-
-bool GetKey::ByteToChar(char *destination, char *source, int byte)
-{
-    if(destination == 0 || source == 0)
-    {
-        return false;
-    }
-
-	int i = 0;
-
-    for(i = 0; i < byte; i ++)
-    {
-		char* whichByte =  destination + i * 8;
-        int j = 0;
-        for(j = 7; j >= 0; j --)
-        {
-			*(whichByte + j) = (char)((unsigned char)source[i] % 2);
-			source[i] >>= 1;
-        }
-    }
-
-    return true;
-}

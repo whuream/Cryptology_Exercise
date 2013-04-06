@@ -1,6 +1,8 @@
 #ifndef _GETKEY_H_
 #define _GETKEY_H_
 
+#include"m_io.h"
+
 class GetKey
 {
 public:
@@ -30,12 +32,6 @@ private:
 
 	// Left is low
 	bool RollShiftLeft(char *begin, int size = 28); 
-
-	// Put bits in byte to a bool vector
-	// Put low bits to low index
-	// This will destroy the source
-	bool ByteToChar(char *destination, char *source, int byte = 8);
-
 
 private:
 	// 64

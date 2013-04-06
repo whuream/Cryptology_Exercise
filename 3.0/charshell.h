@@ -4,11 +4,6 @@
 #include"filedes.h"
 #include"showlog.h"
 
-#include<string>
-#include<fstream>
-#include<iostream>
-#include<sstream>
-
 using namespace std;
 
 class charshell

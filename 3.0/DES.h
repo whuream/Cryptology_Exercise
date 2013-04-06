@@ -32,13 +32,6 @@ private:
 
 	DES& Function(bool mode);
 
-	// Put bits in byte to a bool vector
-	//Put low bits to low index
-	//This will destroy the source
-	bool ByteToChar(char *destination, char *source, int byte = 8);
-
-	bool CharToByte(char *destination, char *source, int byte = 8);
-
 private:
 	// keyK[16 * 48]
 	char keyK[16 * 48];
