@@ -1,5 +1,5 @@
 
-// MFC2.h : PROJECT_NAME 应用程序的主头文件
+// DESProject.h : PROJECT_NAME 应用程序的主头文件
 //
 
 #pragma once
@@ -11,14 +11,14 @@
 #include "resource.h"		// 主符号
 
 
-// CMFC2App:
-// 有关此类的实现，请参阅 MFC2.cpp
+// CDESProjectApp:
+// 有关此类的实现，请参阅 DESProject.cpp
 //
 
-class CMFC2App : public CWinApp
+class CDESProjectApp : public CWinApp
 {
 public:
-	CMFC2App();
+	CDESProjectApp();
 
 // 重写
 public:
@@ -29,4 +29,4 @@ public:
 	DECLARE_MESSAGE_MAP()
 };
 
-extern CMFC2App theApp;
+extern CDESProjectApp theApp;

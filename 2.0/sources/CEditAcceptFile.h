@@ -6,7 +6,7 @@
 #ifndef _EDIT_H_BY_OU_
 #define _EDIT_H_BY_OU_
 
-#include "StdAfx.h"
+#include "../stdafx.h"
 
 
 class CEditAcceptFile : public CEdit

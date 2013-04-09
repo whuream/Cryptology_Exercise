@@ -18,10 +18,10 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MFC2.h">
+    <ClInclude Include="DESProject.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="MFC2Dlg.h">
+    <ClInclude Include="DESProjectDlg.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h">
@@ -31,6 +31,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="sources\CEditAcceptFile.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="sources\charshell.h">
@@ -45,21 +48,24 @@
     <ClInclude Include="sources\getkey.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="sources\showlog.h">
+    <ClInclude Include="sources\m_io.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="CEditAcceptFile.h">
+    <ClInclude Include="sources\showlog.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MFC2.cpp">
+    <ClCompile Include="DESProject.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="MFC2Dlg.cpp">
+    <ClCompile Include="DESProjectDlg.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sources\CEditAcceptFile.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="sources\charshell.cpp">
@@ -74,25 +80,25 @@
     <ClCompile Include="sources\getkey.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="sources\showlog.cpp">
+    <ClCompile Include="sources\m_io.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="CEditAcceptFile.cpp">
+    <ClCompile Include="sources\showlog.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="MFC2.rc">
+    <ResourceCompile Include="DESProject.rc">
       <Filter>资源文件</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\MFC2.rc2">
+    <None Include="res\DESProject.rc2">
       <Filter>资源文件</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\MFC2.ico">
+    <Image Include="res\DESProject.ico">
       <Filter>资源文件</Filter>
     </Image>
   </ItemGroup>

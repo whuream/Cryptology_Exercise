@@ -1,38 +1,43 @@
-// MFC2.cpp : 定义应用程序的类行为。
+
+// DESProject.cpp : 定义应用程序的类行为。
+//
 
 #include "stdafx.h"
-#include "MFC2.h"
-#include "MFC2Dlg.h"
+#include "DESProject.h"
+#include "DESProjectDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
 
-// CMFC2App
+// CDESProjectApp
 
-BEGIN_MESSAGE_MAP(CMFC2App, CWinApp)
+BEGIN_MESSAGE_MAP(CDESProjectApp, CWinApp)
 	ON_COMMAND(ID_HELP, &CWinApp::OnHelp)
 END_MESSAGE_MAP()
 
 
-// CMFC2App 构造
+// CDESProjectApp 构造
 
-CMFC2App::CMFC2App()
+CDESProjectApp::CDESProjectApp()
 {
+	// 支持重新启动管理器
+	m_dwRestartManagerSupportFlags = AFX_RESTART_MANAGER_SUPPORT_RESTART;
+
 	// TODO: 在此处添加构造代码，
 	// 将所有重要的初始化放置在 InitInstance 中
 }
 
 
-// 唯一的一个 CMFC2App 对象
+// 唯一的一个 CDESProjectApp 对象
 
-CMFC2App theApp;
+CDESProjectApp theApp;
 
 
-// CMFC2App 初始化
+// CDESProjectApp 初始化
 
-BOOL CMFC2App::InitInstance()
+BOOL CDESProjectApp::InitInstance()
 {
 	// 如果一个运行在 Windows XP 上的应用程序清单指定要
 	// 使用 ComCtl32.dll 版本 6 或更高版本来启用可视化方式，
@@ -46,6 +51,8 @@ BOOL CMFC2App::InitInstance()
 
 	CWinApp::InitInstance();
 
+
+	AfxEnableControlContainer();
 
 	// 创建 shell 管理器，以防对话框包含
 	// 任何 shell 树视图控件或 shell 列表视图控件。
@@ -63,7 +70,7 @@ BOOL CMFC2App::InitInstance()
 	// 例如修改为公司或组织名
 	SetRegistryKey(_T("应用程序向导生成的本地应用程序"));
 
-	CMFC2Dlg dlg;
+	CDESProjectDlg dlg;
 	m_pMainWnd = &dlg;
 	INT_PTR nResponse = dlg.DoModal();
 	if (nResponse == IDOK)

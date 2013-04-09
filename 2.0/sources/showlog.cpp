@@ -1,4 +1,5 @@
 #include"showlog.h"
+#include "../stdafx.h"
 
 ShowLog::ShowLog()
 {
@@ -13,24 +14,58 @@ ShowLog::ShowLog(ofstream *_out)
 	out = _out;
 }
 
-ShowLog& ShowLog::Initialize(ofstream *_out)
+ShowLog& ShowLog::Initialize(ofstream *_out, CListBox &_log)
 {
+	log = &_log;
 	out = _out;
+	file = true;
 	return *this;
 }
 
-ShowLog& ShowLog::Out(const string &data)
+ShowLog& ShowLog::Initialize(CListBox &_log)
 {
-	cout<<data;
+	log = &_log;
+	file = false;
+	return *this;
+}
+
+ShowLog& ShowLog::Out(const string &data, bool _file)
+{
+	outCEdit += data;
+	if(outCEdit.back()  == '\n')
+	{
+		outCEdit.pop_back();
+		log->AddString(CString(outCEdit.c_str()));
+		outCEdit.clear();
+	}
+	//log->SetSel(log->GetWindowTextLengthW(), log->GetWindowTextLengthW());
+	//log->ReplaceSel(_T(""));
+	
 	(*out)<<data;
 
 	return *this;
 }
 
-ShowLog& ShowLog::Out(const long long int &data)
+ShowLog& ShowLog::Out(const long long int &data, bool _file)
 {
-	cout<<data;
-	(*out)<<data;
+	ostringstream osstmp;
+	osstmp<<data;
+	
+	outCEdit += osstmp.str();
+	if(outCEdit.back()  == '\n')
+	{
+		outCEdit.pop_back();
+		log->AddString(CString(outCEdit.c_str()));
+		outCEdit.clear();
+	}
+	/*
+	outCEdit += osstmp.str();
+	log->SetWindowTextW(CString(outCEdit.c_str()));
+	*/
+	if(_file == true && file == true)
+	{
+		(*out)<<data;
+	}
 
 	return *this;
 }
