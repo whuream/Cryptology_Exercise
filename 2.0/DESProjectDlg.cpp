@@ -122,6 +122,12 @@ BOOL CDESProjectDlg::OnInitDialog()
 	KeyModeCComboBox.InsertString(1, _T("TEXT"));
 	KeyModeCComboBox.SetCurSel(0);
 
+	InputFilePathCEditAcceptFile.SetNext(&OutputFilePathCEditAcceptFile);
+
+	KeyPathCEditAcceptFile.SetWindowTextW(_T("Drag File to here"));
+	InputFilePathCEditAcceptFile.SetWindowTextW(_T("Drag File to here"));
+	OutputFilePathCEditAcceptFile.SetWindowTextW(_T("Drag File to here"));
+
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -201,10 +207,21 @@ void CDESProjectDlg::OnBnClickedButton1()
 
 	charshell m_shell;
 	
-	if( m_shell.Initialize(data, LogListBox, keymode) == true )
+	if(data[1] != "" && data[2] != "" 
+		&& data[1] != "Drag File to here" && data[2] != "Drag File to here" 
+		&&  m_shell.Initialize(data, LogListBox, keymode) == true )
 	{
 		m_shell.Handle();
+		LogListBox.AddString(_T("\n"));
 	}
 
 	// TODO: 在此添加控件通知处理程序代码
+}
+
+BOOL CDESProjectDlg::PreTranslateMessage(MSG* pMsg) 
+{
+ if(pMsg->message==WM_KEYDOWN && pMsg->wParam==VK_ESCAPE)  return TRUE;
+ if(pMsg->message==WM_KEYDOWN && pMsg->wParam==VK_RETURN) return TRUE; 
+ else 
+    return CDialog::PreTranslateMessage(pMsg);
 }

@@ -37,6 +37,9 @@ ShowLog& ShowLog::Out(const string &data, bool _file)
 		outCEdit.pop_back();
 		log->AddString(CString(outCEdit.c_str()));
 		outCEdit.clear();
+		
+		int count = log->GetCount();
+		log->SetCurSel(count - 1);
 	}
 	//log->SetSel(log->GetWindowTextLengthW(), log->GetWindowTextLengthW());
 	//log->ReplaceSel(_T(""));
@@ -57,6 +60,9 @@ ShowLog& ShowLog::Out(const long long int &data, bool _file)
 		outCEdit.pop_back();
 		log->AddString(CString(outCEdit.c_str()));
 		outCEdit.clear();
+
+		int count = log->GetCount();
+		log->SetCurSel(count - 1);
 	}
 	/*
 	outCEdit += osstmp.str();

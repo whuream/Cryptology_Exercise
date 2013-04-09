@@ -39,7 +39,7 @@ bool charshell::Initialize(const vector<string> &_data,  CListBox &_Log, bool _k
 	// SetLog
 	if(logPath == "")
 	{
-		logPath = inPath + "_LOG";
+		logPath = inPath + ".LOG";
 	}
 
 	if(logPath == keyPath)
@@ -193,7 +193,7 @@ bool charshell::Initialize(const vector<string> &_data,  CListBox &_Log, bool _k
 	// Set OutPath
 	if(_data[3] == "")
 	{
-		outPath = inPath + "_DES";
+		outPath = inPath + ".DES";
 	}
 
 	if(outPath == keyPath)
@@ -230,7 +230,7 @@ bool charshell::Initialize(const vector<string> &_data,  CListBox &_Log, bool _k
 	{
 		if(reoutPath == "")
 		{
-			reoutPath = inPath + "_REOUT";
+			reoutPath = inPath + ".REOUT";
 		}
 
 		if(reoutPath == keyPath)

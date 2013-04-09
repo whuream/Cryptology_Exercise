@@ -40,4 +40,6 @@ public:
 	//CEdit LogCEdit;
 	CComboBox KeyModeCComboBox;
 	CListBox LogListBox;
+
+	BOOL PreTranslateMessage(MSG* pMsg);
 };
