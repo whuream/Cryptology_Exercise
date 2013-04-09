@@ -108,6 +108,50 @@ bool charshell::SetIn()
 	{
 		m_log.Out("Open input file : ").Out(inPath).Out(" succeed.\n\n");
 	}
+
+	long long int lenth;
+	in->seekg(0, ios::end);
+	lenth = in->tellg();
+	in->seekg(0, ios::beg);
+
+	if(mode == "2")
+	{
+		if(lenth % 8 != 0)
+		{
+			m_log.Out("Error: Input file imcomplete.\n\n");
+			return false;
+		}
+		long long int head;
+		in->read((char *)&head, 8);
+		in->seekg(0, ios::beg);
+		lenth -= 8;
+		
+		if(head % 8 == 0)
+		{
+			if(head != lenth)
+			{
+				m_log.Out("Error: Input file imcomplete.\n\n");
+				return false;
+			}
+		}
+		else
+		{
+			if(head / 8 * 8 + 8 != lenth)
+			{
+				m_log.Out("Error: Input file imcomplete.\n\n");
+				return false;
+			}
+		}
+	}
+	else
+	{
+		if(lenth == 0)
+		{
+			m_log.Out("Error: Input file can not be empty.\n\n");
+			return false;
+		}
+	}
+
 	return true;
 }
 
@@ -115,7 +159,7 @@ bool charshell::SetOut()
 {
 	if(argc <= 4 || argv[4] == 0)
 	{
-		outPath = inPath + "_DES";
+		outPath = inPath + ".DES";
 	}
 	else
 	{
@@ -158,7 +202,7 @@ bool charshell::SetReout()
 {
 	if(argc < 6 || argv[5] == 0)
 	{
-		reoutPath = inPath + "_REOUT";
+		reoutPath = inPath + ".REOUT";
 	}
 	else
 	{
@@ -202,32 +246,69 @@ bool charshell::SetReout()
 
 bool charshell::Setlog()
 {
-	if(argc < 7 || argv[6] == 0)
+	if(argc > 1 && string(argv[1]) == "3")
 	{
-		if(argc >= 4 && argv[3] !=0)
+		if(argc < 7 || argv[6] == 0)
 		{
-			logPath = string(argv[3]) + "_LOG";
+			if(argc >= 4 && argv[3] !=0)
+			{
+				logPath = string(argv[3]) + ".LOG";
+			}
+			else
+			{
+				logPath = "_.LOG";
+			}
 		}
 		else
 		{
-			logPath = "_LOG";
+			logPath = argv[6];
+
+			if(logPath == string(argv[2]))
+			{
+				m_log.Out("Error : Log file can't be key file.\n\n");
+				return false;
+			}
+			if(logPath == string(argv[2]))
+			{
+				m_log.Out("Error : Log file can't be input file.\n\n");
+				return false;
+			}
+		}
+	}
+	else if(argc > 1 && (string(argv[1]) == "1" || string(argv[1]) == "2"))
+	{
+		if(argc < 6 || argv[5] == 0)
+		{
+			if(argc >= 4 && argv[3] !=0)
+			{
+				logPath = string(argv[3]) + ".LOG";
+			}
+			else
+			{
+				logPath = "_.LOG";
+			}
+		}
+		else
+		{
+			logPath = argv[5];
+
+			if(logPath == string(argv[2]))
+			{
+				m_log.Out("Error : Log file can't be key file.\n\n");
+				return false;
+			}
+			if(logPath == string(argv[2]))
+			{
+				m_log.Out("Error : Log file can't be input file.\n\n");
+				return false;
+			}
 		}
 	}
 	else
 	{
-		logPath = argv[6];
+		logPath = "_.LOG";
 	}
-
-	if(logPath == keyPath)
-	{
-		m_log.Out("Error : Log file can't be key file.\n\n");
-		return false;
-	}
-	if(logPath == inPath)
-	{
-		m_log.Out("Error : Log file can't be input file.\n\n");
-		return false;
-	}
+	
 
 	log = new ofstream(logPath.c_str());
 

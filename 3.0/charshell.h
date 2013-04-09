@@ -9,7 +9,7 @@ using namespace std;
 class charshell
 {
 public:
-	// 2 value is mode
+	// 2nd value is mode
 	// 2.1 to encrypt
 	// 2.2 to decipher
 	// 2.3 to check

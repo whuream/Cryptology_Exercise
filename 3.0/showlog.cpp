@@ -2,6 +2,7 @@
 
 ShowLog::ShowLog()
 {
+	out = 0;
 }
 
 ShowLog::~ShowLog()
@@ -22,7 +23,10 @@ ShowLog& ShowLog::Initialize(ofstream *_out)
 ShowLog& ShowLog::Out(const string &data)
 {
 	cout<<data;
-	(*out)<<data;
+	if(out != 0)
+	{
+		(*out)<<data;
+	}
 
 	return *this;
 }
@@ -30,8 +34,10 @@ ShowLog& ShowLog::Out(const string &data)
 ShowLog& ShowLog::Out(const long long int &data)
 {
 	cout<<data;
-	(*out)<<data;
-
+	if(out != 0)
+	{
+		(*out)<<data;
+	}
 	return *this;
 }
 
