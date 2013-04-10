@@ -1,3 +1,8 @@
+// File name: filedes.cpp
+// Copyright (C) Ream
+// All rights reserved.
+// Description: encrypt or decipher a file
+
 #include"filedes.h"
 
 filedes::filedes()

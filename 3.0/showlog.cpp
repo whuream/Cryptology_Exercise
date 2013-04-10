@@ -1,3 +1,8 @@
+// File name: showlog.h
+// Copyright (C) Ream
+// All rights reserved.
+// Description: make logs
+
 #include"showlog.h"
 
 ShowLog::ShowLog()

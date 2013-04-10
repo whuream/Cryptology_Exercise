@@ -1,3 +1,8 @@
+// File name: DES.cpp
+// Copyright (C) Ream
+// All rights reserved.
+// Description: encrypt or decipher 8 bytes data
+
 #include"DES.h"
 
 DES::DES()

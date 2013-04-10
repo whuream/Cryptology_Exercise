@@ -1,3 +1,8 @@
+// File name: getkey.cpp
+// Copyright (C) Ream
+// All rights reserved.
+// Description: get 16 key in des
+
 #include"getkey.h"
 
 GetKey::GetKey()

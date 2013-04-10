@@ -1,3 +1,8 @@
+// File name: charshell.cpp
+// Copyright (C) Ream
+// All rights reserved.
+// Description: a character shell for encrypt and decipher
+
 #include"charshell.h"
 
 charshell::charshell(int _argc, char *_argv[]) : argc(_argc), argv(_argv), in(0), out(0), log(0), reout(0)

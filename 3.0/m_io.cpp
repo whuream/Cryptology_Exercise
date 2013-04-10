@@ -1,3 +1,8 @@
+// File name: m_io.cpp
+// Copyright (C) Ream
+// All rights reserved.
+// Description: basic interface of bit and byte
+
 #include"m_io.h"
 
 bool ByteToChar(char *destination, char *source, int byte)
