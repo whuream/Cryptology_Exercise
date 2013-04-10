@@ -1,6 +1,7 @@
 // File name: CEditAcceptFile.cpp
 // Copyright (C) Ream
 // All rights reserved.
+// Description: CEdit control can accept file
 
 #include"CEditAcceptFile.h"
 

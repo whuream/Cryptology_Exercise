@@ -1,3 +1,8 @@
+// File name: showlog.cpp
+// Copyright (C) Ream
+// All rights reserved.
+// Description: show log in CListBox and out file
+
 #include"showlog.h"
 #include "../stdafx.h"
 

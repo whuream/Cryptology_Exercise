@@ -1,3 +1,8 @@
+// File name: charshell.cpp
+// Copyright (C) Ream
+// All rights reserved.
+// Description: a shell for encrypt and decipher
+
 #include"charshell.h"
 #include "../stdafx.h"
 

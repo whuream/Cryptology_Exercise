@@ -1,3 +1,8 @@
+// File name: charshell.h
+// Copyright (C) Ream
+// All rights reserved.
+// Description: a shell for encrypt and decipher
+
 #ifndef _CHARSHELL_H
 #define _CHARSHELL_H
 
@@ -22,16 +27,22 @@ public:
 	// _data[3] is output
 	// _data[4] is reoutput
 	// _data[5] is log
+	// CListBox is where log out
 	bool Initialize(const vector<string> &_data, CListBox &_Log, bool _keyMode = false);
+	
 	bool Handle();
 	
 private:
+	// Check whether original file is same(in bit) as it after encryption and deciption
+	// return true if success, return false if fail
 	bool Check();
 
 
 private:
+	// mode "1" to encription, "2" to deciption, "3" to check
 	string mode;
 
+	// keypath and key[8]
 	string keyPath;
 	char key[8];
 
