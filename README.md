@@ -44,22 +44,22 @@
 
     ### command-line
     
-    ![command-line](./sample/command-line-code.bmp)
+    ![command-line](./sample/command-line-code.png)
 
 *   
 
     ### MFC
     
-    ![MFC](./sample/MFC-code.bmp)
+    ![MFC](./sample/MFC-code.png)
     
 ## Class Map
 
 *   
     ### command-line
     
-    ![command-line](./sample/command-line-class.bmp)
+    ![command-line](./sample/command-line-class.png)
     
 *   
     ### MFC
     
-    ![MFC](./sample/MFC-class.bmp)
+    ![MFC](./sample/MFC-class.png)
