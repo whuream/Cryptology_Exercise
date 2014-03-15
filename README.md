@@ -1,10 +1,40 @@
-DES encryption and decryption and check sorftware.
+# DES encryption and decryption
 
-1.0
-This is not a efficient algorithm that in a speed of 100 to 200 Kb/s.
+*   `command-line` command line application
 
-3.0
-Best algorithm I can make that in a speed of 1.8 to 2.0 Mb/s
+*   `MFC` MFC application
 
-2.0
-The 3.0's algorithm with a windows UI.
+## Developer Dependencies
+
+*   Visual Studio 2010/2012
+
+## Usage
+
+*   
+
+    ### in command-line:
+
+
+    des.exe <mode> <keyfile> <infile> [outfile] [reoutfile] [logfile]
+    
+    mode:
+    1 encryption
+    2 decryption
+    3 encryption & decryption (check)
+    
+    key: path of key file (8 bytes)
+    
+    infile: input file
+    
+    outfile: output file
+    
+    reoutfile: decrypted file after encripted (used only in encryption & decryption mode)
+    
+    
+![command-line sample](./sample/command-line.png)
+
+*   
+    ### MFC
+    
+![MFC](./sample/MFC.png)
+
